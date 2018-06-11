@@ -87,7 +87,7 @@ Provide information about the current user.
 {
 	"status": "success",
 	"data": {
-    "user_id": id_integer,
+    "user_id": "id",
     "username": "username",
     "admin": "admin-status",
     "registered_on": "registration-date"
