@@ -2,10 +2,8 @@
 Routes module
 """
 
-# from connection.constants import StatusConverter
-# from .case_routes import CaseApi, CasesApi
-# from .fake_routes import TestData
-# from .job_routes import JobApi, JobsApi, StatusApi
+from .auth_routes import RegisterApi, LoginApi, UserApi, LogoutApi
+from .fake_routes import TestData
 
 
 def setup_routes(app, api):
@@ -13,15 +11,10 @@ def setup_routes(app, api):
     Set up the routes for these api end points
     """
 
-    pass
+    api.add_resource(RegisterApi, '/auth/register')
+    api.add_resource(LoginApi, '/auth/login')
+    api.add_resource(UserApi, '/auth/status')
+    api.add_resource(LogoutApi, '/auth/logout')
 
-    # app.url_map.converters['stat'] = StatusConverter
-    #
-    # api.add_resource(CasesApi, '/case')
-    # api.add_resource(CaseApi, '/case/<int:case_id>')
-    # api.add_resource(JobsApi, '/job')
-    # api.add_resource(JobApi, '/job/<int:job_id>')
-    # api.add_resource(StatusApi, '/job/<int:job_id>/status')
-    #
-    # # Only while in development
-    # api.add_resource(TestData, '/test')
+    # Only while in development
+    api.add_resource(TestData, '/test')

@@ -1,10 +1,18 @@
-# project/server/models.py
+"""
+This module is reponsible for the SQL connection
+to store Users and BlacklistTokens
+"""
 
+from flask_sqlalchemy import SQLAlchemy
 import jwt
 import datetime
 from flask import current_app
-from service.database import db, bcrypt
 
+from .hashing import bc
+
+db = SQLAlchemy()
+
+Base = db.Model
 
 class User(db.Model):
     """ User Model for storing user related details """
@@ -18,7 +26,7 @@ class User(db.Model):
 
     def __init__(self, username, password, admin=False):
         self.username = username
-        self.password = bcrypt.generate_password_hash(
+        self.password = bc.generate_password_hash(
             password, current_app.config.get('BCRYPT_LOG_ROUNDS')
         ).decode()
         self.registered_on = datetime.datetime.now()
@@ -89,3 +97,13 @@ class BlacklistToken(db.Model):
             return True
         else:
             return False
+
+
+def init_database(app):
+    """
+    Initialise the database and required classes in the context
+    of the relevant flask app
+    """
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()

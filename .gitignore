@@ -7,5 +7,5 @@ __pycache__/
 .cache/
 .pytest_cache/
 
-# Test database
-test.db
+# Configuration files
+config.py
