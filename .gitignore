@@ -1,0 +1,11 @@
+# IDE content
+.vscode/
+.mypy_cache/
+
+# Python content
+__pycache__/
+.cache/
+.pytest_cache/
+
+# Test database
+test.db
