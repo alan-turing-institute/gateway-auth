@@ -14,7 +14,7 @@ docker-compose up
 2. Create a test user (username: turing, password: turing) via a `POST` request to the container:
 
  ```
-curl --request "POST" ':6000/test'
+curl --request "POST" ':5050/test'
  ```
 
 ## Using the auth service
