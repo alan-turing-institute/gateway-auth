@@ -1,0 +1,32 @@
+version: '3'
+services:
+
+  auth:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+     - "5050:5050"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres_auth
+    networks:
+      - db_nw
+
+  postgres_auth:
+    image: "postgres:latest"
+    volumes:
+     - database_auth:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=sg
+      - POSTGRES_PASSWORD=sg
+      - POSTGRES_DB=sg
+    networks:
+     - db_nw
+
+networks:
+  db_nw:
+    driver: bridge
+volumes:
+  database_auth:
