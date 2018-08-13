@@ -4,6 +4,7 @@ The main entry point for this flask app
 """
 
 import os
+from time import sleep
 from json import load
 
 from flask import Flask
@@ -31,9 +32,21 @@ def configure_app(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app = Flask(__name__, instance_relative_config=True)
+
+logger = app.logger
+
 configure_app(app)
 
-init_database(app)
+db_loaded = False
+while not db_loaded:
+    try:
+        db_loaded = True
+        init_database(app)
+    except Exception as e:
+        db_loaded = False
+        logger.error(e)
+        sleep(3)
+
 init_bcrypt(app)
 
 api = Api(app)
