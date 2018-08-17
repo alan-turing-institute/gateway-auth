@@ -5,7 +5,6 @@ The main entry point for this flask app
 
 import os
 from time import sleep
-from json import load
 
 from flask import Flask
 from flask_cors import CORS
@@ -16,27 +15,12 @@ from connection import init_database, init_bcrypt
 
 from routes import setup_routes
 
-
-config = {
-    "development": "config.DevelopmentConfig",
-    "testing": "config.TestingConfig",
-    "production": "config.ProductionConfig",
-    "default": "config.DevelopmentConfig"
-}
-
-
-def configure_app(app):
-    # load config.py options
-    config_name = os.getenv('FLASK_CONFIGURATION', 'default')
-    app.config.from_object(config[config_name])
-    app.config.from_pyfile('config.cfg', silent=True)
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-app = Flask(__name__, instance_relative_config=True)
-
+app = Flask(__name__)
 logger = app.logger
-
-configure_app(app)
+config_mode = os.getenv("FLASK_CONFIGURATION", "development")
+config_fname = "config.{}.json".format(config_mode.lower())
+app.config.from_json(config_fname)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db_loaded = False
 while not db_loaded:
@@ -51,9 +35,9 @@ while not db_loaded:
 init_bcrypt(app)
 
 api = Api(app)
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 setup_routes(app, api)
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5050)
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5050)

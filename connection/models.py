@@ -14,8 +14,10 @@ db = SQLAlchemy()
 
 Base = db.Model
 
+
 class User(db.Model):
     """ User Model for storing user related details """
+
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -27,7 +29,7 @@ class User(db.Model):
     def __init__(self, username, password, admin=False):
         self.username = username
         self.password = bc.generate_password_hash(
-            password, current_app.config.get('BCRYPT_LOG_ROUNDS')
+            password, current_app.config.get("BCRYPT_LOG_ROUNDS")
         ).decode()
         self.registered_on = datetime.datetime.now()
         self.admin = admin
@@ -39,15 +41,14 @@ class User(db.Model):
         """
         try:
             payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=0),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id
+                "exp": datetime.datetime.utcnow()
+                + datetime.timedelta(days=1, seconds=0),
+                "iat": datetime.datetime.utcnow(),
+                "sub": user_id,
             }
 
             return jwt.encode(
-                payload,
-                current_app.config.get('SECRET_KEY'),
-                algorithm='HS256'
+                payload, current_app.config.get("SECRET_KEY"), algorithm="HS256"
             )
         except Exception as e:
             return e
@@ -60,23 +61,24 @@ class User(db.Model):
         :return: integer|string
         """
         try:
-            payload = jwt.decode(auth_token, current_app.config.get('SECRET_KEY'))
+            payload = jwt.decode(auth_token, current_app.config.get("SECRET_KEY"))
             is_blacklisted_token = BlacklistToken.check_blacklist(auth_token)
             if is_blacklisted_token:
-                return 'Token blacklisted. Please log in again.'
+                return "Token blacklisted. Please log in again."
             else:
-                return payload['sub']
+                return payload["sub"]
         except jwt.ExpiredSignatureError:
-            return 'Signature expired. Please log in again.'
+            return "Signature expired. Please log in again."
         except jwt.InvalidTokenError:
-            return 'Invalid token. Please log in again.'
+            return "Invalid token. Please log in again."
 
 
 class BlacklistToken(db.Model):
     """
     Token Model for storing JWT tokens
     """
-    __tablename__ = 'blacklist_tokens'
+
+    __tablename__ = "blacklist_tokens"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     token = db.Column(db.String(500), unique=True, nullable=False)
@@ -87,7 +89,7 @@ class BlacklistToken(db.Model):
         self.blacklisted_on = datetime.datetime.now()
 
     def __repr__(self):
-        return '<id: token: {}'.format(self.token)
+        return "<id: token: {}".format(self.token)
 
     @staticmethod
     def check_blacklist(auth_token):

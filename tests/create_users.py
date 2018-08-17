@@ -18,23 +18,22 @@ def set_up_test_database():
     """
 
     session = db.session
-    user = User(username='turing', password='turing', admin=False)
+    user = User(username="turing", password="turing", admin=False)
 
     done = False
     for _ in User.query.all():
         done = True
     if done:
-        print('Data already there!')
+        print("Data already there!")
         exit()
 
     session.add(user)
     session.commit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = ('postgres_auth://'
-                                             'sg:sg@localhost:8082/sg')
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres_auth://" "sg:sg@localhost:8082/sg"
 
     init_database(app)
 
