@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 
 bc = Bcrypt()
 
+
 def init_bcrypt(app):
     """
     Initialise bcrypt in the context of the relevant flask app

@@ -8,4 +8,4 @@ __pycache__/
 .pytest_cache/
 
 # Configuration files
-config.py
+config.development.json
