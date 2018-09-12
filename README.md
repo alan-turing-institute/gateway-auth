@@ -7,7 +7,7 @@ User management for Gateway project. Generates JSON web tokens (<https://jwt.io/
 1. Create a running auth container:
 
 ```shell
-docker-compose run postgres_auth
+docker-compose run auth_database
 docker-compose up
 ```
 

@@ -33,7 +33,7 @@ def set_up_test_database():
 
 if __name__ == "__main__":
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres_auth://" "sg:sg@localhost:8082/sg"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "auth_database://" "sg:sg@localhost:8082/sg"
 
     init_database(app)
 

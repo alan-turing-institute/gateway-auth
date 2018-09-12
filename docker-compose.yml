@@ -10,11 +10,11 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - postgres_auth
+      - auth_database
     networks:
       - db_nw
 
-  postgres_auth:
+  auth_database:
     image: "postgres:latest"
     volumes:
      - database_auth:/var/lib/postgresql/data
