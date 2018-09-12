@@ -9,3 +9,4 @@ __pycache__/
 
 # Configuration files
 config.development.json
+config.production.json
