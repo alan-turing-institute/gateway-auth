@@ -53,8 +53,8 @@ def test_login(demo_app):
 
     # check that the username is stored in the database
     auth_token = data["auth_token"]
-    key = demo_app.config.get("SECRET_KEY")
-    payload = jwt.decode(auth_token, key)
+    auth_key = demo_app.config.get("AUTH_KEY")
+    payload = jwt.decode(auth_token, auth_key)
 
     # check that the username is stored in the jwt token
     assert payload["name"] == "turing"
