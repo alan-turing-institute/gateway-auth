@@ -34,7 +34,7 @@ class User(db.Model):
         self.registered_on = datetime.datetime.now()
         self.admin = admin
 
-    def encode_auth_token(self, user_id):
+    def encode_auth_token(self, user_id, name):
         """
         Generates the Auth Token
         :return: string
@@ -45,6 +45,7 @@ class User(db.Model):
                 + datetime.timedelta(days=1, seconds=0),
                 "iat": datetime.datetime.utcnow(),
                 "sub": user_id,
+                "name": name,
             }
 
             return jwt.encode(

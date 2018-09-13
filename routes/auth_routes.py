@@ -19,17 +19,15 @@ class RegisterApi(Resource):
 
         if not user:
             try:
-                user = User(
-                    username=post_data.get("username"),
-                    password=post_data.get("password"),
-                )
+                username = post_data.get("username")
+                password = post_data.get("password")
+                user = User(username=username, password=password)
                 # insert the user
                 db.session.add(user)
                 db.session.commit()
 
                 # generate the auth token
-                auth_token = user.encode_auth_token(user.id)
-                print(auth_token)
+                auth_token = user.encode_auth_token(user.id, name=username)
 
                 responseObject = {
                     "status": "success",
@@ -62,11 +60,12 @@ class LoginApi(Resource):
 
         try:
             # fetch the user data
-            user = User.query.filter_by(username=post_data.get("username")).first()
+            username = post_data.get("username")
+            user = User.query.filter_by(username=username).first()
             if user and bc.check_password_hash(
                 user.password, post_data.get("password")
             ):
-                auth_token = user.encode_auth_token(user.id)
+                auth_token = user.encode_auth_token(user.id, name=username)
                 if auth_token:
                     responseObject = {
                         "status": "success",

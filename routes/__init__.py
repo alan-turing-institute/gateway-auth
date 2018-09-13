@@ -6,7 +6,7 @@ from .auth_routes import RegisterApi, LoginApi, UserApi, LogoutApi
 from .fake_routes import TestData
 
 
-def setup_routes(app, api):
+def set_up_routes(app, api):
     """
     Set up the routes for these api end points
     """
