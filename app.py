@@ -13,7 +13,7 @@ from sqlalchemy.exc import OperationalError
 
 from connection import init_database, init_bcrypt
 
-from routes import setup_routes
+from routes import set_up_routes
 
 app = Flask(__name__)
 logger = app.logger
@@ -37,7 +37,7 @@ init_bcrypt(app)
 api = Api(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-setup_routes(app, api)
+set_up_routes(app, api)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5050)

@@ -34,7 +34,7 @@ class User(db.Model):
         self.registered_on = datetime.datetime.now()
         self.admin = admin
 
-    def encode_auth_token(self, user_id):
+    def encode_auth_token(self, user_id, name):
         """
         Generates the Auth Token
         :return: string
@@ -45,10 +45,11 @@ class User(db.Model):
                 + datetime.timedelta(days=1, seconds=0),
                 "iat": datetime.datetime.utcnow(),
                 "sub": user_id,
+                "name": name,
             }
 
             return jwt.encode(
-                payload, current_app.config.get("SECRET_KEY"), algorithm="HS256"
+                payload, current_app.config.get("AUTH_KEY"), algorithm="HS256"
             )
         except Exception as e:
             return e
@@ -61,7 +62,7 @@ class User(db.Model):
         :return: integer|string
         """
         try:
-            payload = jwt.decode(auth_token, current_app.config.get("SECRET_KEY"))
+            payload = jwt.decode(auth_token, current_app.config.get("AUTH_KEY"))
             is_blacklisted_token = BlacklistToken.check_blacklist(auth_token)
             if is_blacklisted_token:
                 return "Token blacklisted. Please log in again."

@@ -1,7 +1,0 @@
-{
-    "TESTING": false,
-    "BCRYPT_LOG_ROUNDS": 12,
-    "SECRET_KEY": "my_precious",
-    "SQLALCHEMY_DATABASE_URI": "postgres://sg:sg@auth_database/sg"
-
-}
