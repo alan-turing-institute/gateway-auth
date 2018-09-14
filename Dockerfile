@@ -16,7 +16,6 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 
 # Set up the application state
-EXPOSE 5050
 ENV FLASK_APP app.py
 
 # Configure the run command
