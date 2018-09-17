@@ -1,5 +1,6 @@
 {
     "BCRYPT_LOG_ROUNDS": 12,
     "AUTH_KEY": "my_precious",
+    "JOB_KEY": "my_precious",
     "SQLALCHEMY_DATABASE_URI": "sqlite://"
 }
