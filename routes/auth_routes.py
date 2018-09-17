@@ -92,22 +92,13 @@ class UserApi(Resource):
 
     def get(self):
         # get the auth token
-        auth_header = request.headers.get("Authorization")
-        if auth_header:
-            try:
-                auth_token = auth_header.split(" ")[1]
-            except IndexError:
-                responseObject = {
-                    "status": "fail",
-                    "message": "Bearer token malformed.",
-                }
-                return make_response(jsonify(responseObject), 401)
-        else:
-            auth_token = ""
+        auth_header = request.headers.get("Authorization", "")
+        auth_token = auth_header.replace("Bearer ", "")
+
         if auth_token:
             resp = User.decode_auth_token(auth_token)
-            if not isinstance(resp, str):
-                user = User.query.filter_by(id=resp).first()
+            if isinstance(resp, dict):
+                user = User.query.filter_by(id=resp["sub"]).first()
 
                 # note this information is not stored in the token,
                 # (the token is used to access the db and fetch this information)
@@ -131,6 +122,40 @@ class UserApi(Resource):
             return make_response(jsonify(responseObject), 401)
 
 
+class TokenApi(Resource):
+    """
+    Token Resource
+    """
+
+    def __init__(self, **kwargs):
+        pass
+
+    def get(self):
+
+        job_id = request.args.get("job_id", "")
+
+        auth_header = request.headers.get("Authorization", "")
+        auth_token = auth_header.replace("Bearer ", "")
+
+        resp = User.decode_auth_token(auth_token)
+        if isinstance(resp, dict):
+            username = resp["name"]
+            user = User.query.filter_by(username=username).first()
+            job_token = user.encode_job_token(job_id=job_id).decode()
+            responseObject = {
+                "status": "success",
+                "message": "Generated job token.",
+                "job_token": job_token,
+            }
+            return make_response(jsonify(responseObject), 200)
+        else:
+            responseObject = {
+                "status": "fail",
+                "message": "Provide a valid auth token.",
+            }
+            return make_response(jsonify(responseObject), 403)
+
+
 class LogoutApi(Resource):
     """
     Logout Resource
@@ -145,7 +170,7 @@ class LogoutApi(Resource):
             auth_token = ""
         if auth_token:
             resp = User.decode_auth_token(auth_token)
-            if not isinstance(resp, str):
+            if isinstance(resp, dict):
                 # mark the token as blacklisted
                 blacklist_token = BlacklistToken(token=auth_token)
                 try:

@@ -36,7 +36,7 @@ class User(db.Model):
 
     def encode_auth_token(self, user_id, name):
         """
-        Generates the Auth Token
+        Generates an Auth Token
         :return: string
         """
         try:
@@ -54,6 +54,26 @@ class User(db.Model):
         except Exception as e:
             return e
 
+    def encode_job_token(self, job_id):
+        """
+        Generates a Job Token
+        :return: string
+        """
+        try:
+            payload = {
+                "exp": datetime.datetime.utcnow()
+                + datetime.timedelta(days=30, seconds=0),
+                "iat": datetime.datetime.utcnow(),
+                "sub": self.id,
+                "name": self.username,
+                "job_id": job_id,
+            }
+            return jwt.encode(
+                payload, current_app.config.get("JOB_KEY"), algorithm="HS256"
+            )
+        except Exception as e:
+            return e
+
     @staticmethod
     def decode_auth_token(auth_token):
         """
@@ -67,7 +87,7 @@ class User(db.Model):
             if is_blacklisted_token:
                 return "Token blacklisted. Please log in again."
             else:
-                return payload["sub"]
+                return payload
         except jwt.ExpiredSignatureError:
             return "Signature expired. Please log in again."
         except jwt.InvalidTokenError:
