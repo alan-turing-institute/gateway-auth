@@ -12,7 +12,7 @@ cached_auth_token = None
 
 
 @request_context(
-    "/auth/register",
+    "/register",
     data='{"username": "turing", "password": "turing"}',
     content_type="application/json",
     method="POST",
@@ -37,7 +37,7 @@ def test_register(demo_app):
 
 @pytest.mark.dependency(depends=["test_register"])
 @request_context(
-    "/auth/login",
+    "/login",
     data='{"username": "turing", "password": "turing"}',
     content_type="application/json",
     method="POST",
@@ -71,7 +71,7 @@ def test_job_token(demo_app):
     with demo_app.app_context():
         auth = f"Bearer {pytest.auth_token}"
         with demo_app.test_request_context(
-            "/auth/token?job_id=6ddc5385-02f8-4ce4-996f-9ee92c0fbb5d",
+            "/token?job_id=6ddc5385-02f8-4ce4-996f-9ee92c0fbb5d",
             method="GET",
             headers={"Authorization": auth},
         ):
