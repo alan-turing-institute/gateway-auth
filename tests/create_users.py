@@ -24,11 +24,11 @@ def set_up_test_database():
     for _ in User.query.all():
         done = True
     if done:
-        print("Data already there!")
-        exit()
+        return "Test users already exist."
 
     session.add(user)
     session.commit()
+    return "Created test users."
 
 
 if __name__ == "__main__":

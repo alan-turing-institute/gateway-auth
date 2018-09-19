@@ -15,4 +15,5 @@ class TestData(Resource):
         """
         Create the default fake data
         """
-        set_up_test_database()
+        message = set_up_test_database()
+        return {"status": "success", "messages": [message]}
