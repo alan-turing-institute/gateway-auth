@@ -8,5 +8,5 @@ __pycache__/
 .pytest_cache/
 
 # Configuration files
-config.development.json
-config.production.json
+config.dev.json
+config.prod.json
