@@ -11,11 +11,11 @@ def set_up_routes(app, api):
     Set up the routes for these api end points
     """
 
-    api.add_resource(RegisterApi, "/auth/register")
-    api.add_resource(LoginApi, "/auth/login")
-    api.add_resource(UserApi, "/auth/status")
-    api.add_resource(TokenApi, "/auth/token")
-    api.add_resource(LogoutApi, "/auth/logout")
+    api.add_resource(RegisterApi, "/register")
+    api.add_resource(LoginApi, "/login")
+    api.add_resource(UserApi, "/status")
+    api.add_resource(TokenApi, "/token")
+    api.add_resource(LogoutApi, "/logout")
 
     # Only while in development
     api.add_resource(TestData, "/test")
