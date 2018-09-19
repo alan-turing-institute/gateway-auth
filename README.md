@@ -19,7 +19,7 @@ curl --request "POST" ':5050/test'
 
 ## Using the auth service
 
-#### `/auth/login`
+#### `/login`
 
 Log in to the service.
 
@@ -48,11 +48,11 @@ Returns a JWT object.
 
 
 
-#### `/auth/logout`
+#### `/logout`
 
 Log out of the service.
 
-#### `/auth/register`
+#### `/register`
 
 Register a new user for the service.
 
@@ -77,7 +77,7 @@ Register a new user for the service.
 
 
 
-#### `/auth/status`
+#### `/status`
 
 Provide information about the current user.
 
