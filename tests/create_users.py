@@ -28,7 +28,7 @@ def set_up_test_database():
 
     session.add(user)
     session.commit()
-    return "Created test users."
+    return "Added user: turing."
 
 
 if __name__ == "__main__":
