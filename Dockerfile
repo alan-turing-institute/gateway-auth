@@ -1,4 +1,4 @@
-FROM base/archlinux:latest
+FROM base/archlinux:2018.09.01
 
 # Install a bunch of extra packages
 RUN pacman -Sy --noconfirm python python-pip
